@@ -10,7 +10,25 @@
 //   colored video size (based on the unit passed parametter)
 float video(int w, int h, int durationMovie, int durationCredits, int fps, char* unit) {
    // YOUR CODE HERE - BEGIN
+float tailleSectionCouleur = w * h * 3 * 8 * fps * durationMovie;
+    
+    float tailleSectionNB = w * h * 8 * fps * durationCredits;
+    
+    float taille_en_bits = tailleSectionCouleur + tailleSectionNB;
 
-   // YOUR CODE HERE - END
-   return 0;
+    if (strcmp(unit, "bt") == 0) {
+        return taille_en_bits / 8;
+    } 
+    else if (strcmp(unit, "ko") == 0) {
+        return taille_en_bits / 1024;
+    } 
+    else if (strcmp(unit, "mo") == 0) {
+        return taille_en_bits / 1024 / 1024;
+    } 
+    else if (strcmp(unit, "go") == 0) {
+        return taille_en_bits / 1024 / 1024 / 1024;
+    } 
+    else {
+        return taille_en_bits;
+    }
 }
