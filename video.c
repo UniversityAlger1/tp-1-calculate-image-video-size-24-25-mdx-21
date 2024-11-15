@@ -10,25 +10,27 @@
 //   colored video size (based on the unit passed parametter)
 float video(int w, int h, int durationMovie, int durationCredits, int fps, char* unit) {
    // YOUR CODE HERE - BEGIN
-float tailleSectionCouleur = w * h * 3 * 8 * fps * durationMovie;
-    
-    float tailleSectionNB = w * h * 8 * fps * durationCredits;
-    
-    float taille_en_bits = tailleSectionCouleur + tailleSectionNB;
+    const int bitTo_octet = 8;
+    const int bitTo_kilooctet = 1024;
+    const int bitTo_megaoctet = 1024;
+    const int bitTo_gigaoctet = 1024;
+
+    long long tailleSectionCouleur = (long long)w * h * 24 * fps * durationMovie;
+    long long tailleSectionNB = (long long)w * h * 8 * fps * durationCredits;
+
+    long long taille_en_bits = tailleSectionCouleur + tailleSectionNB;
+
+    float tailleEnOctets = taille_en_bits / (float)bitTo_octet;
 
     if (strcmp(unit, "bt") == 0) {
-        return taille_en_bits / 8;
-    } 
-    else if (strcmp(unit, "ko") == 0) {
-        return taille_en_bits / 1024;
-    } 
-    else if (strcmp(unit, "mo") == 0) {
-        return taille_en_bits / 1024 / 1024;
-    } 
-    else if (strcmp(unit, "go") == 0) {
-        return taille_en_bits / 1024 / 1024 / 1024;
-    } 
-    else {
         return taille_en_bits;
+    } else if (strcmp(unit, "ko") == 0) {
+        return tailleEnOctets / bitTo_kilooctet;
+    } else if (strcmp(unit, "mo") == 0) {
+        return tailleEnOctets / (bitTo_kilooctet * bitTo_megaoctet);
+    } else if (strcmp(unit, "go") == 0) {
+        return tailleEnOctets / (bitTo_kilooctet * bitTo_megaoctet * bitTo_gigaoctet);
+    } else {
+        return 0;
     }
 }
