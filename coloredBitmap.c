@@ -8,21 +8,17 @@
 //   colored image size Bitmap (based on the unit passed parametter)
 float coloredBitmap(int w, int h, char* unit) {
    // YOUR CODE HERE - BEGIN
-   float taille_en_bits = w * h * 3 * 8;
+    long long totalenbits = (long long)w * h * 24;
 
-   if (strcmp(unit, "bt") == 0) {
-       return taille_en_bits;
-   } 
-   else if (strcmp(unit, "ko") == 0) {
-       return taille_en_bits / 1024;
-   } 
-   else if (strcmp(unit, "mo") == 0) {
-       return taille_en_bits / 1024 / 1024;
-   } 
-   else if (strcmp(unit, "go") == 0) {
-       return taille_en_bits / 1024 / 1024 / 1024;
-   } 
-   else {
-       return taille_en_bits;
-   }
+    if (strcmp(unit, "bt") == 0) {
+        return (float)totalenbits;
+    } else if (strcmp(unit, "ko") == 0) {
+        return (float)totalenbits / (8 * 1024);
+    } else if (strcmp(unit, "mo") == 0) {
+        return (float)totalenbits / (8 * 1024 * 1024);
+    } else if (strcmp(unit, "go") == 0) {
+        return (float)totalenbits / (8 * 1024 * 1024 * 1024);
+    } else {
+        return -1;
+    }
 }
