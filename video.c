@@ -9,20 +9,28 @@
 // Return value
 //   colored video size (based on the unit passed parametter)
 float video(int w, int h, int durationMovie, int durationCredits, int fps, char* unit) {
-    float colorSectionSize = w * h * 3 * fps * durationMovie; // 3 bytes per pixel for RGB color
-    float bwSectionSize = w * h * 1 * fps * durationCredits; // 1 byte per pixel for grayscale
-
-    float totalSizeBytes = colorSectionSize + bwSectionSize;
-
+    const int bit_per_pixel_color = 24;
+    const int bit_per_pixel_bw = 8;
+    
+    long long totalFramesMovie = durationMovie * fps;
+    long long totalFramesCredits = durationCredits * fps;
+    
+    long long sizeMovieBits = w * h * bit_per_pixel_color * totalFramesMovie;
+    long long sizeCreditsBits = w * h * bit_per_pixel_bw * totalFramesCredits;
+    
+    long long totalSizeBits = sizeMovieBits + sizeCreditsBits;
+    
+    float sizeInUnit = 0.0;
+    
     if (strcmp(unit, "bt") == 0) {
-        return totalSizeBytes;
+        sizeInUnit = totalSizeBits / 8.0;
     } else if (strcmp(unit, "ko") == 0) {
-        return totalSizeBytes * 8 / 1024;
+        sizeInUnit = totalSizeBits / 8.0 / 1024.0;
     } else if (strcmp(unit, "mo") == 0) {
-        return totalSizeBytes * 8 / (1024 * 1024);
+        sizeInUnit = totalSizeBits / 8.0 / 1024.0 / 1024.0;
     } else if (strcmp(unit, "go") == 0) {
-        return totalSizeBytes * 8 / (1024 * 1024 * 1024);
-    } else {
-        return 0;
+        sizeInUnit = totalSizeBits / 8.0 / 1024.0 / 1024.0 / 1024.0;
     }
+    
+    return sizeInUnit;
 }
