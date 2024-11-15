@@ -17,11 +17,11 @@ float video(int w, int h, int durationMovie, int durationCredits, int fps, char*
     if (strcmp(unit, "bt") == 0) {
         return totalSizeBytes;
     } else if (strcmp(unit, "ko") == 0) {
-        return totalSizeBytes / 1024;
+        return totalSizeBytes * 8 / 1024;
     } else if (strcmp(unit, "mo") == 0) {
-        return totalSizeBytes / (1024 * 1024);
+        return totalSizeBytes * 8 / (1024 * 1024);
     } else if (strcmp(unit, "go") == 0) {
-        return totalSizeBytes / (1024 * 1024 * 1024);
+        return totalSizeBytes * 8 / (1024 * 1024 * 1024);
     } else {
         return 0;
     }
