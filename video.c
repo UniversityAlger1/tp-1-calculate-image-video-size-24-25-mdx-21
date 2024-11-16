@@ -9,28 +9,36 @@
 // Return value
 //   colored video size (based on the unit passed parametter)
 float video(int w, int h, int durationMovie, int durationCredits, int fps, char* unit) {
-    const int bit_per_pixel_color = 24;
-    const int bit_per_pixel_bw = 8;
-    
-    long long totalFramesMovie = durationMovie * fps;
-    long long totalFramesCredits = durationCredits * fps;
-    
-    long long sizeMovieBits = w * h * bit_per_pixel_color * totalFramesMovie;
-    long long sizeCreditsBits = w * h * bit_per_pixel_bw * totalFramesCredits;
-    
-    long long totalSizeBits = sizeMovieBits + sizeCreditsBits;
-    
-    float sizeInUnit = 0.0;
-    
+   // YOUR CODE HERE - BEGIN
+  int colorPixelSize = 24;   // 3 bytes per pixel for RGB (colored)
+    int bwPixelSize = 1 ;  // 1 bit per pixel for Black/White image (1 bit = 1/8 byte)
+
+    // Calculate total number of frames for the movie and credits
+    float  totalFramesMovie = durationMovie * fps;
+    float totalFramesCredits = durationCredits * fps;
+
+    // Calculate the total size in bit
+    float  totalSizeBit = 0;
+
+    // Size of the movie frames (colored)
+    totalSizeBit += totalFramesMovie * w * h * colorPixelSize;
+
+    // Size of the credits frames (Black/White) - 1 bit per pixel
+    totalSizeBit += totalFramesCredits * w * h * bwPixelSize;
+
+    // Convert based on the unit specified
     if (strcmp(unit, "bt") == 0) {
-        sizeInUnit = totalSizeBits / 8.0;
-    } else if (strcmp(unit, "ko") == 0) {
-        sizeInUnit = totalSizeBits / 8.0 / 1024.0;
-    } else if (strcmp(unit, "mo") == 0) {
-        sizeInUnit = totalSizeBits / 8.0 / 1024.0 / 1024.0;
-    } else if (strcmp(unit, "go") == 0) {
-        sizeInUnit = totalSizeBits / 8.0 / 1024.0 / 1024.0 / 1024.0;
+        return totalSizeBit / 8; // Convert to bytes
     }
-    
-    return sizeInUnit;
+    else if (strcmp(unit, "ko") == 0) {
+        return totalSizeBit / 1000.0; // Convert to kilobits
+    }
+    else if (strcmp(unit, "mo") == 0) {
+        return totalSizeBit / (1000.0*1000.0); // Convert to megabits
+    }
+    else if (strcmp(unit, "go") == 0) {
+        return totalSizeBit / (1000.0*1000.0*1000.0); // Convert to gigabits
+    }
+   // YOUR CODE HERE - END
+   return 0;
 }
