@@ -9,36 +9,22 @@
 // Return value
 //   colored video size (based on the unit passed parametter)
 float video(int w, int h, int durationMovie, int durationCredits, int fps, char* unit) {
-   // YOUR CODE HERE - BEGIN
-  int colorPixelSize = 24;   // 3 bytes per pixel for RGB (colored)
-    int bwPixelSize = 1 ;  // 1 bit per pixel for Black/White image (1 bit = 1/8 byte)
+    int colorBitsPerPixel = 24;
+    int bwBitsPerPixel = 8;
 
-    // Calculate total number of frames for the movie and credits
-    float  totalFramesMovie = durationMovie * fps;
-    float totalFramesCredits = durationCredits * fps;
+    long long totalColorBits = w * h * colorBitsPerPixel * fps * durationMovie;
+    long long totalBWBits = w * h * bwBitsPerPixel * fps * durationCredits;
+    long long totalBits = totalColorBits + totalBWBits;
 
-    // Calculate the total size in bit
-    float  totalSizeBit = 0;
-
-    // Size of the movie frames (colored)
-    totalSizeBit += totalFramesMovie * w * h * colorPixelSize;
-
-    // Size of the credits frames (Black/White) - 1 bit per pixel
-    totalSizeBit += totalFramesCredits * w * h * bwPixelSize;
-
-    // Convert based on the unit specified
     if (strcmp(unit, "bt") == 0) {
-        return totalSizeBit / 8; // Convert to bytes
+        return (float)totalBits / 8;
+    } else if (strcmp(unit, "ko") == 0) {
+        return (float)totalBits / 8 / 1024;
+    } else if (strcmp(unit, "mo") == 0) {
+        return (float)totalBits / 8 / 1024 / 1024;
+    } else if (strcmp(unit, "go") == 0) {
+        return (float)totalBits / 8 / 1024 / 1024 / 1024;
+    } else {
+        return -1;
     }
-    else if (strcmp(unit, "ko") == 0) {
-        return totalSizeBit / 1000.0; // Convert to kilobits
-    }
-    else if (strcmp(unit, "mo") == 0) {
-        return totalSizeBit / (1000.0*1000.0); // Convert to megabits
-    }
-    else if (strcmp(unit, "go") == 0) {
-        return totalSizeBit / (1000.0*1000.0*1000.0); // Convert to gigabits
-    }
-   // YOUR CODE HERE - END
-   return 0;
 }
