@@ -19,11 +19,11 @@ float video(int w, int h, int durationMovie, int durationCredits, int fps, char*
     if (strcmp(unit, "bt") == 0) {
         return (float)totalBits;
     } else if (strcmp(unit, "ko") == 0) {
-        return totalBits / (8.0 * 1024);
+        return totalBits / (8.0 * 1000);
     } else if (strcmp(unit, "mo") == 0) {
-        return totalBits / (8.0 * 1024 * 1024);
+        return totalBits / (8.0 * 1000 * 1000);
     } else if (strcmp(unit, "go") == 0) {
-        return totalBits / (8.0 * 1024 * 1024 * 1024);
+        return totalBits / (8.0 * 1000 * 1000 * 1000);
     }
 
     return 0.0;
