@@ -1,40 +1,39 @@
 #include <string.h>
+#include <stdio.h>
 #include "config/video.h"
 
 // Parameters:
-// w: width of the image
-// h: height of the image
-// durationMovie: duration in second of movie (colored image)
-// durationCredits: duration in second of credit (image Black/White)
-// fps: Frames Per Second of the video
-// unit: Unit of the output value. It could be 'bt' byte, 'ko' kilobits, 'mo' megabits, 'go' gigabits
+//   w: width of the image
+//   h: height of the imag
+//   durationMovie: duration in seconds of the movie (colored image)
+//   durationCredits: duration in seconds of credits (black/white image)
+//   unit: Unit of the output value. It could be 'bt' for bytes, 'ko' for kilobits, 'mo' for megabits, 'go' for gigabits
 // Return value
-// colored video size (based on the unit passed parameter)
+//   colored video size (based on the unit passed parameter)
 float video(int w, int h, int durationMovie, int durationCredits, int fps, char* unit) {
-    // Calculate the size of the colored section (in bits)
-    int coloredFrames = durationMovie * fps;
-    long coloredSizeBits = (long)coloredFrames * w * h * 24; // 24 bits per pixel for color
+    // Bits per pixel for colored image (24 bits)
+    float bitsPerPixel = 24;
 
-    // Calculate the size of the black and white section (in bits)
-    int creditFrames = durationCredits * fps;
-    long creditSizeBits = (long)creditFrames * w * h * 8; // 8 bits per pixel for grayscale
+    float clrImage = w * h * bitsPerPixel * durationMovie * fps;
+    float BImage = w * h * durationCredits * fps;
+    float sizeInBits = clrImage + BImage; // Add to total size in bits
+    float size;
 
-    // Total size in bits
-    long totalSizeBits = coloredSizeBits + creditSizeBits;
 
-    // Convert total size to bytes
-    float totalSizeBytes = totalSizeBits / 8.0;
 
-    // Convert to the requested unit
-    if (strcmp(unit, "bt") == 0) {
-        return totalSizeBytes; // Bytes
-    } else if (strcmp(unit, "ko") == 0) {
-        return totalSizeBytes / 1024.0; // Kilobytes
-    } else if (strcmp(unit, "mo") == 0) {
-        return totalSizeBytes / (1024.0 * 1024.0); // Megabytes
-    } else if (strcmp(unit, "go") == 0) {
-        return totalSizeBytes / (1024.0 * 1024.0 * 1024.0); // Gigabytes
-    } else {
-        return 0; // Return 0 for unsupported units
-    }
+    // Convert size based on the requested unit
+    if (strcmp(unit, "bt") == 0) {
+        size = sizeInBits; // Convert to bytes
+    } else if (strcmp(unit, "ko") == 0) {
+        size = sizeInBits / (1024); // Convert to kilobits
+    } else if (strcmp(unit, "mo") == 0) {
+        size = sizeInBits / (1024 * 1024); // Convert to megabits
+    } else if (strcmp(unit, "go") == 0) {
+        size = sizeInBits / (1024 * 1024 * 1024); // Convert to gigabits
+    } else {
+        // If the unit is not recognized, return -1 or some error value
+        return -1.0f;
+    }
+
+    return size / 8;
 }
